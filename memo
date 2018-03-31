@@ -1,9 +1,44 @@
+#Debian infos
 user connecter : who
 derniere connexion : last
 history
 lastcomm
 
+#commande divers
 echo "test mail" | mail -s "sujet mail" user@dns
 
-/etc/init.d/networking restart
+grep -rnwl '/var/www/rutorrent/' -e 'Bonobox '
+sed -i 's/** pattern **/** replace **/g' ** file **
+find . -type d -name "bar" -exec rm -rf "{}" \;
 
+ifconfig eth0
+dig TXT +short o-o.myaddr.l.google.com @ns1.google.com
+nmap -p 443 192.168.2.254
+
+(echo >/dev/tcp/{host}/{port}) &>/dev/null && echo "open" || echo "close"
+(echo >/dev/udp/{host}/{port}) &>/dev/null && echo "open" || echo "close"
+
+echo "Scanning TCP ports..."
+for p in {1..1023}
+do
+  (echo >/dev/tcp/localhost/$p) >/dev/null 2>&1 && echo "$p open"
+done
+
+#!/bin/bash
+find -type d -exec chmod 755 {} \;
+find -type f -exec chmod 644 {} \;
+
+find /home/patate/torrents -type d -exec chmod 755 {} ;; find /home/patate/torrents -type f -exec chmod 644 {};
+
+
+aptitude search '~i !~M' -F '%p' > mes_paquets.txt
+aptitude install `cat mes_paquets.txt`
+
+#Debian services
+service _name_ start
+service _name_ stop
+service _name_ restart
+service _name_ reload
+service _name_ status
+
+/etc/init.d/networking restart
