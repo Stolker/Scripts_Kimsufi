@@ -1,0 +1,71 @@
+##Install Bonobox
+apt-get update && apt-get upgrade -y
+apt-get install git-core -y
+cd /tmp
+git clone https://github.com/exrat/rutorrent-bonobox
+cd rutorrent-bonobox
+chmod a+x bonobox.sh && ./bonobox.sh
+log: https://{host}/rutorrent/install.html
+
+##Update Plex Media Server:
+Release notes : https://forums.plex.tv/discussion/62832/plex-media-server/p1
+json file : https://plex.tv/api/downloads/1.json?channel=plexpass
+cd /tmp
+wget https://www.plex.tv/downloads/
+service plexmediaserver stop
+dpkg -i plexmediaserver_*.deb
+rm plexmediaserver_*.deb
+service plexmediaserver start
+
+##Script Update :
+git clone https://github.com/mrworf/plexupdate
+sed -i 's/sudo//g' $PWD/plexupdate/extras/installer.sh
+./plexupdate/extras/installer.sh
+
+##Update rutorrent:
+alias rut_check='cd /var/www/rutorrent && git status origin/master | sed -n 2p'
+alias rut_up='cd /var/www/rutorrent && git pull origin master'
+alias ls='ls $LS_OPTIONS --color=auto'
+alias ll='ls $LS_OPTIONS -al --color=auto'
+
+##Nano:
+git clone https://github.com/scopatz/nanorc.git /usr/share/nano
+ls /usr/share/nano/*.nanorc | xargs -I {} echo 'include "{}"' >> ~/.nanorc
+
+##chown / chmod Plex folder:
+##File:
+#!/bin/bash
+chown -R {user}:{user} /home/{user}/torrents
+chmod -R 775 /home/{user}/torrents
+
+#crontab -e
+0 */1 * * * /home/{user}/script/chmod.sh >/dev/null 2>&1
+
+##Debian 9:
+apt-get update && apt-get dist-upgrade -y
+apt-get update && apt-get upgrade -y && apt-get autoremove -y && apt-get clean
+
+apt-get install unattended-upgrades needrestart -y
+dpkg-reconfigure unattended-upgrades
+log : /var/log/unattended-upgrades/
+conf :  /etc/apt/apt.conf.d/50unattended-upgrades
+ 
+apt-get install -y haveged curl git unzip zip dirmngr mlocate htop
+
+/etc/updatedb.conf
+updatedb
+
+locale-gen
+dpkg-reconfigure locales
+
+export LANG=fr_FR.UTF-8
+LANG=fr_FR.UTF-8
+LANGUAGE=fr_FR
+LC_ALL=fr_FR.UTF-8
+export LANG
+export LANGUAGE
+export LC_ALL
+
+##SSH :
+echo root_file_key > /root/.ssh/authorized_keys2
+echo {user}_file_key > /home/{user}/.ssh/authorized_keys2
