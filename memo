@@ -1,0 +1,9 @@
+user connecter : who
+derniere connexion : last
+history
+lastcomm
+
+echo "test mail" | mail -s "sujet mail" user@dns
+
+/etc/init.d/networking restart
+
